@@ -25,5 +25,5 @@ setup(
 	author='Justin R. Jent',
 	author_email='jentjr@gmail.com',
 	install_requires=requires,
-	packages=['external']
+	packages=['enviropy', 'enviropy.external']
 	)
