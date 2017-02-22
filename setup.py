@@ -24,6 +24,7 @@ setup(
 	long_description=read('README.rst'),
 	author='Justin R. Jent',
 	author_email='jentjr@gmail.com',
+    download_url='https://github.com/jentjr/enviropy/',
 	install_requires=requires,
 	packages=['enviropy', 'enviropy.external']
 	)
