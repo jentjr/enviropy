@@ -1,11 +1,12 @@
-Documentation for external data sources
+Documentation for connecting to external data sources
 ***************************************
 
-.. automodule:: external
+.. automodule:: enviropy.external
 
 MANAGES 3.x
 ===========
 
 Connecting to a MANAGES 3.x database
 
-.. automodule:: external.manages.read_manages3
+.. automodule:: enviropy.external.manages.read_manages3
+    :members:

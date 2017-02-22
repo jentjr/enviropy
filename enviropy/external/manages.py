@@ -1,3 +1,9 @@
+"""
+.. module:: manages
+
+.. moduleauthor:: Justin R. Jent <jentjr@gmail.com>
+
+"""
 import pyodbc
 import pandas
 
