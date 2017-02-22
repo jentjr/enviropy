@@ -27,5 +27,5 @@ setup(
     download_url='https://github.com/jentjr/enviropy/',
 	license='MIT',
 	install_requires=requires,
-	packages=['enviropy']
+	packages=['enviropy', 'enviropy.external']
 	)
