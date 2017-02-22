@@ -18,7 +18,7 @@ def read_manages3(mdb_path):
 
 	Examples
 	--------
-	>>> from enviropy.external import manages
+	>>> from enviropy.external import read_manages3
 	>>> cd = manages.read_manages3('H:\INTERNAL\MANAGES_DATA\Cardinal\Cardinal\Site.mdb')
 
     .. autoclass:: read_manages3
@@ -65,7 +65,7 @@ def read_gint(gpj_path):
 
 	Examples
 	--------
-	>>> from enviropy.external import gint
+	>>> from enviropy.external import read_gint
 	>>> cd = gint.read_gint('L:\Internal\gINTw\CD far ccr project.gpj')
 
     .. autoclass:: read_gint

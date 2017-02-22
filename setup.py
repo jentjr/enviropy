@@ -12,19 +12,20 @@ if sys.argv[-1] == 'publish':
     sys.exit()
 
 requires = ['pyodbc', 'pandas']
-version = '0.0.1'
+from enviropy import __version__, __name__, __author__ 
 
 def read(f):
     return open(f, encoding='utf-8').read()
 
 setup(
-    name='enviropy',
-    version=version,
+    name=__name__,
+    version=__version__,
 	description='Statistical methods and plotting tools for environmental data',
 	long_description=read('README.rst'),
-	author='Justin R. Jent',
+	author=__author__,
 	author_email='jentjr@gmail.com',
     download_url='https://github.com/jentjr/enviropy/',
+	license='MIT',
 	install_requires=requires,
 	packages=['enviropy']
 	)
