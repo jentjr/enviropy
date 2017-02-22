@@ -26,5 +26,5 @@ setup(
 	author_email='jentjr@gmail.com',
     download_url='https://github.com/jentjr/enviropy/',
 	install_requires=requires,
-	packages=['enviropy', 'enviropy.external']
+	packages=['enviropy']
 	)
