@@ -8,7 +8,7 @@ SPHINXPROJ    = enviropy
 SOURCEDIR     = source
 BUILDDIR      = build
 
-GH_PAGES_SOURCES = source enviropy Makefile
+GH_PAGES_SOURCES = source Makefile
 
 # Put it first so that "make" without argument is like "make help".
 help:
