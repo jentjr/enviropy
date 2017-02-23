@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # build the docs
+sphinx-apidoc -f -o docs/source enviropy
 cd docs
 make clean
 make html

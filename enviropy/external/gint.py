@@ -11,7 +11,7 @@ def read_gint(gpj_path):
 
 	Parameters
 	----------
-	gpj_path : connection string
+	gpj_path : str
 	    The path to the MANAGES 3.x Site.mdb file.
 
     Returns

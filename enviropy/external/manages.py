@@ -10,7 +10,7 @@ def read_manages3(mdb_path):
 
 	Parameters
 	----------
-	mdb_path : connection string
+	mdb_path : str
 	    The path to the MANAGES 3.x Site.mdb file.
 
     Returns
