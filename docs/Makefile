@@ -6,7 +6,9 @@ SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
 SPHINXPROJ    = enviropy
 SOURCEDIR     = source
-BUILDDIR      = ../..enviropy-docs
+BUILDDIR      = ../../enviropy-docs
+PDFBUILDDIR   = /tmp
+PDF           = ../manual.pdf
 
 # Put it first so that "make" without argument is like "make help".
 help:
@@ -22,4 +24,9 @@ html:
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
 
-
+latexpdf:
+	$(SPHINXBUILD) -b latex $(ALLSPHINXOPTS) $(PDFBUILDDIR)/latex
+	@echo "Running LaTeX files through pdflatex..."
+	make -C $(PDFBUILDDIR)/latex all-pdf
+	cp $(PDFBUILDDIR)/latex/*.pdf $(PDF)
+	@echo "pdflatex finished; see $(PDF)"
