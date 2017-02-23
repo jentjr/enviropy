@@ -1,28 +1,22 @@
 .. enviropy documentation master file, created by
-   sphinx-quickstart on Tue Feb 21 17:24:10 2017.
+   sphinx-quickstart on Thu Feb 23 01:53:38 2017.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
 enviropy
 ========
 
-Statistical methods and plotting tools for environmental data
-
 Installation
 ------------
 
-::
-
-    pip install git+https://github.com/jentjr/enviropy.git
+:: 
+  
+  pip install git+https://github.com/enviropy.git
 
 Documentation
 -------------
 .. toctree::
    :maxdepth: 2
-   
-   includeme
-   modules
-   ...
 
 
 
