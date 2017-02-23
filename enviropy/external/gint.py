@@ -12,7 +12,7 @@ def read_gint(gpj_path):
 	Parameters
 	----------
 	gpj_path : str
-	    The path to the MANAGES 3.x Site.mdb file.
+	    The path to the gINT .gpj file.
 
     Returns
     -------
@@ -22,9 +22,7 @@ def read_gint(gpj_path):
 	Examples
 	--------
 	>>> from enviropy.external import read_gint
-	>>> cd = gint.read_gint('L:\Internal\gINTw\CD far ccr project.gpj')
-
-    .. autoclass:: read_gint
+	>>> cd = read_gint('L:\Internal\gINTw\CD far ccr project.gpj')
 
 	"""
 

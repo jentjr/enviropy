@@ -5,8 +5,8 @@ __all__ = ['read_manages3']
 
 def read_manages3(mdb_path):
     """
-	Function to read MANAGES 3.X database and return
-	groundwater data in Pandas DataFrame for analysis.
+	Function to read a MANAGES 3.x database and return
+	the data in a pandas DataFrame for analysis.
 
 	Parameters
 	----------
@@ -21,9 +21,7 @@ def read_manages3(mdb_path):
 	Examples
 	--------
 	>>> from enviropy.external import read_manages3
-	>>> cd = manages.read_manages3('H:\INTERNAL\MANAGES_DATA\Cardinal\Cardinal\Site.mdb')
-
-    .. autoclass:: read_manages3
+	>>> cd = read_manages3('H:\INTERNAL\MANAGES_DATA\Cardinal\Cardinal\Site.mdb')
 
 	"""
 
