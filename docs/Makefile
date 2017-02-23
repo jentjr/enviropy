@@ -6,7 +6,7 @@ SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
 SPHINXPROJ    = enviropy
 SOURCEDIR     = source
-BUILDDIR      = build
+BUILDDIR      = ../..enviropy-docs
 
 # Put it first so that "make" without argument is like "make help".
 help:
