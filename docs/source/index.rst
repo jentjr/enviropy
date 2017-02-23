@@ -15,9 +15,10 @@ Installation
 
     pip install git+https://github.com/jentjr/enviropy.git
 
+Documentation
+------------
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
    
    modules
    ...
