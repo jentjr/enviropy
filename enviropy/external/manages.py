@@ -1,6 +1,8 @@
 import pyodbc
 import pandas
 
+__all__ = ['read_manages3']
+
 def read_manages3(mdb_path):
     """
 	Function to read MANAGES 3.X database and return

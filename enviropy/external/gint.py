@@ -1,12 +1,14 @@
 import pyodbc
 import pandas
 
+__all__ = ['read_gint']
+
 def read_gint(gpj_path):
     """
 	Function to read gINT database and return
-	boring log data and well construction details 
+	boring log data and well construction details
 	in Pandas DataFrame for analysis.
-	
+
 	Parameters
 	----------
 	gpj_path : connection string
@@ -36,7 +38,7 @@ def read_gint(gpj_path):
     SELECT MON_WELL_CONSTR.Mon_Well_Number, MON_WELL_CONSTR.Type_Grout,
 	MON_WELL_CONSTR.Type_Bent, MON_WELL_CONSTR.Type_Screen,
 	MON_WELL_CONSTR.Dia_Screen, MON_WELL_CONSTR.Length_Screen,
-	MON_WELL_CONSTR.Type_Gravel, MON_WELL_CONSTR.Type_Riser, 
+	MON_WELL_CONSTR.Type_Gravel, MON_WELL_CONSTR.Type_Riser,
 	MON_WELL_CONSTR.Dia_Riser, MON_WELL_CONSTR.Spacer_Depths,
 	MON_WELL_CONSTR.Comments, MON_WELL_CONSTR.Top_Bent_Depth,
 	MON_WELL_CONSTR.Top_Gravel_Depth, MON_WELL_CONSTR.Check_Valve_Depth,
