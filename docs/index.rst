@@ -3,26 +3,50 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-enviropy
-========
+Enviropy: statistical methods and plotting tools for environmental data
+=======================================================================
 
-Installation
-------------
+Right now this is a fun project to learn Python with the goal of having a 
+convenient package for storing and analyzing environmental data.   
 
-:: 
-  
-  pip install git+https://github.com/enviropy.git
+--------------------
 
-Documentation
--------------
+A quick overview
+----------------
+
+Connect to external data sources
+    >>> from enviropy.external import read_manages3, read_gint
+    >>> read_manages3('C:\path\to\Site.mdb')
+    >>> read_gint('C:\path\to\gint.gpj')
+
+The User Guide
+--------------
+
+A user guide is planned...
+
 .. toctree::
    :maxdepth: 2
 
+   user/install
+   user/quickstart
+   user/advanced
 
+The API Documentation
+---------------------
 
-Indices and tables
-==================
+Specifics on functions, classes, and methods will go here...
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. toctree::
+   :maxdepth: 2
+
+   enviropy 
+
+The Contributor Guide
+---------------------
+
+Contributions are encouraged and welcomed...
+
+.. toctree::
+   :maxdepth: 2
+
+   dev/contributing
