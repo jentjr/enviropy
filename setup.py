@@ -3,7 +3,7 @@ import os
 import sys
 from codecs import open
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 if sys.argv[-1] == 'publish':
     os.system('python setup.py register')
@@ -12,7 +12,7 @@ if sys.argv[-1] == 'publish':
     sys.exit()
 
 requires = ['pyodbc', 'pandas']
-from enviropy import __version__, __name__, __author__ 
+from enviropy import __version__, __name__, __author__
 
 def read(f):
     return open(f, encoding='utf-8').read()
@@ -27,5 +27,5 @@ setup(
     download_url='https://github.com/jentjr/enviropy/',
 	license='MIT',
 	install_requires=requires,
-	packages=['enviropy', 'enviropy.external']
+	packages=find_packages(exclude=['docs', 'test'])
 	)
