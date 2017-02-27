@@ -11,7 +11,7 @@ if sys.argv[-1] == 'publish':
     os.system('python setup.py bdist_wheel upload --universal')
     sys.exit()
 
-requires = ['pyodbc', 'pandas']
+requires = ['pyodbc', 'pandas', 'matplotlib']
 from enviropy import __version__, __name__, __author__
 
 def read(f):

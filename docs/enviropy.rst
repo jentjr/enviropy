@@ -12,4 +12,5 @@ Subpackages
 .. toctree::
 
     enviropy.external
+    enviropy.plots
 
