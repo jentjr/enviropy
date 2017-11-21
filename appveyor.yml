@@ -18,6 +18,3 @@ build_script:
   - conda update conda --quiet
   - ps: conda install numpy scipy pandas pyodbc matplotlib --quiet 
   - python setup.py install
-
-test_script:
-  - python -c 'import enviropy; enviropy.__version__;'

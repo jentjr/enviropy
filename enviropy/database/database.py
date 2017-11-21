@@ -35,4 +35,6 @@ class WaterQuality(BaseModel):
 
 class WellConstruction(BaseModel):
     site() = CharField
+    boring_id = CharField()
+
 
