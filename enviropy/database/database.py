@@ -1,40 +1,67 @@
-from peewee import *
+import psycopg2
+from config import config
 
-db = SqliteDatabase(DATABASE)
+def connect():
+    """ connect to postgresql database"""
 
-def before_request_handler():
-    db.connect()
+    conn = None
+    try:
+        params = config()
 
-def after_request_handler():
-    db.close()
+        print('Connecting to the PostgreSQL database...')
+        conn = psycopg2.connect(**params)
 
-class BaseModel(Model):
-    class Meta:
-        database = db
+        cur = conn.cursor()
 
-class WaterQuality(BaseModel):
-    site = Charfield()
-    sample_campaign = TextField()
-    lab_id = TextField()
-    sample_id = CharField()
-    sample_date = DateField()
-    param_name = TextField()
-    method_name = TextField()
-    analysis_result = DoubleField()
-    qualifier_flags = TextField()
-    detection_limit = FloatField()
-    reporting_limit = FloatField()
-    practical_quantitation_limit = NumericField()
-    measure_unit = TextField()
-    analysis_date = DateField()
-    sample_comments = TextField()
-    results_comments = TextField()
+        print('PostgreSQL database version:')
+        cur.execute('SELECT version()')
 
-    class Meta:
-        database = db
+        db_version = cur.fetchone()
+        print(db_version)
 
-class WellConstruction(BaseModel):
-    site() = CharField
-    boring_id = CharField()
+        cur.close()
+    
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print('Database connection closed.')
 
+def create_tables():
+    """ create tables in postgresql database"""
 
+    commands = (
+            """
+            CREATE TABLE site (
+              site_id SERIAL PRIMARY KEY,
+              site_name VARCHAR(255) NOT NULL,
+              site_location geography(POINT, 4326)
+            )
+            """,
+            """
+            CREATE TABLE sample_location (
+              site_id ,
+              sample_location_id ,
+              sample_location geography(POINT, 4326)
+            )
+            """
+            )
+    
+    conn = None
+    try:
+        params = config()
+        conn = psycopg2.connect(**params)
+        cur = conn.cursor()
+
+        for command in commands:
+            cur.execute(command)
+        
+        cur.close()
+
+        conn.commit()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
