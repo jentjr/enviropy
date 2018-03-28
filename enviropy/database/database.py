@@ -35,16 +35,68 @@ def create_tables():
             """
             CREATE TABLE site (
               site_id SERIAL PRIMARY KEY,
-              site_name VARCHAR(255) NOT NULL,
-              site_location geography(POINT, 4326)
+              site_name VARCHAR NOT NULL,
+              site_location GEOGRAPHY(POINT, 4326)
             )
             """,
             """
             CREATE TABLE sample_location (
-              site_id ,
-              sample_location_id ,
-              sample_location geography(POINT, 4326)
+              site_name VARCHAR NOT NULL,
+              sample_location_id VARCHAR,
+              sample_location GEOGRAPHY(POINT, 4326)
             )
+            """,
+            """
+            CREATE TABLE water_analysis (
+              lab_id VARCHAR,
+              site_name VARCHAR,
+              program_id VARCHAR,
+              sample_location_id VARCHAR,
+              sample_date DATE,
+              parameter VARCHAR,
+              filtered BOOL,
+              analysis_result REAL,
+              analysis_unit CHAR,
+              analysis_pql REAL,
+              analysis_mdl REAL,
+              analysis_qualifier CHAR(1),
+              analysis_matrix VARCHAR,
+              analysis_method VARCHAR,
+              analysis_comment VARCHAR
+            )
+            """
+            )
+    
+    conn = None
+    try:
+        params = config()
+        conn = psycopg2.connect(**params)
+        cur = conn.cursor()
+
+        for command in commands:
+            cur.execute(command)
+        
+        cur.close()
+
+        conn.commit()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+
+def drop_tables():
+    """ drop tables"""
+
+    commands = (
+            """
+            DROP TABLE site CASCADE
+            """,
+            """
+            DROP TABLE sample_location CASCADE
+            """,
+            """
+            DROP TABLE water_analysis CASCADE
             """
             )
     
