@@ -64,6 +64,22 @@ def create_tables():
               analysis_method VARCHAR,
               analysis_comment VARCHAR
             )
+            """,
+            """
+            CREATE TABLE waste_analysis (
+              lab_id VARCHAR,
+              site_name VARCHAR,
+              program_id VARCHAR,
+              sample_id VARCHAR,
+              sample_date DATE,
+              parameter VARCHAR,
+              method VARCHAR,
+              prep_method VARCHAR,
+              analysis_result REAL,
+              analysis_unit CHAR,
+              analysis_flag CHAR(1),
+              analysis_comment VARCHAR
+            )
             """
             )
     
@@ -97,7 +113,10 @@ def drop_tables():
             """,
             """
             DROP TABLE water_analysis CASCADE
-            """
+            """,
+			"""
+			DROP TABLE waste_analysis CASCADE
+			"""
             )
     
     conn = None
