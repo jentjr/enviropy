@@ -114,9 +114,9 @@ def drop_tables():
             """
             DROP TABLE water_analysis CASCADE
             """,
-			"""
-			DROP TABLE waste_analysis CASCADE
-			"""
+            """
+	    DROP TABLE waste_analysis CASCADE
+            """
             )
     
     conn = None
