@@ -1,53 +1,42 @@
 import psycopg2
 from config import config
 
-def connect():
-    """ connect to postgresql database"""
-
-    conn = None
-    try:
-        params = config()
-
-        print('Connecting to the PostgreSQL database...')
-        conn = psycopg2.connect(**params)
-
-        cur = conn.cursor()
-
-        print('PostgreSQL database version:')
-        cur.execute('SELECT version()')
-
-        db_version = cur.fetchone()
-        print(db_version)
-
-        cur.close()
-    
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-    finally:
-        if conn is not None:
-            conn.close()
-            print('Database connection closed.')
-
 def create_tables():
     """ create tables in postgresql database"""
 
     commands = (
             """
-            CREATE TABLE site (
+            CREATE TABLE IF NOT EXISTS site (
               site_id SERIAL PRIMARY KEY,
-              site_name VARCHAR NOT NULL,
+              site_name VARCHAR UNIQUE NOT NULL,
               site_location GEOGRAPHY(POINT, 4326)
             )
             """,
             """
-            CREATE TABLE sample_location (
-              site_name VARCHAR NOT NULL,
+            CREATE TABLE IF NOT EXISTS sample_location (
+              site_name VARCHAR UNIQUE NOT NULL,
               sample_location_id VARCHAR,
-              sample_location GEOGRAPHY(POINT, 4326)
+              sample_location GEOGRAPHY(POINT, 4326),
+              PRIMARY KEY (site_name, sample_location_id)
             )
             """,
+	    """
+	    CREATE TABLE IF NOT EXISTS well_detail (
+	      site_name VARCHAR,
+	      well_id VARCHAR,
+	      boring_id VARCHAR,
+              PRIMARY KEY (site_name, well_id)
+	    )
+	    """,
+	    """
+	    CREATE TABLE IF NOT EXISTS boring_log (
+	      site_name VARCHAR,
+	      boring_id VARCHAR,
+	      boring_location GEOGRAPHY(POINT, 4326)
+	    )
+	    """,
             """
-            CREATE TABLE water_analysis (
+            CREATE TABLE IF NOT EXISTS water_analysis (
               lab_id VARCHAR,
               site_name VARCHAR,
               program_id VARCHAR,
@@ -66,7 +55,7 @@ def create_tables():
             )
             """,
             """
-            CREATE TABLE waste_analysis (
+            CREATE TABLE IF NOT EXISTS waste_analysis (
               lab_id VARCHAR,
               site_name VARCHAR,
               program_id VARCHAR,
@@ -80,7 +69,20 @@ def create_tables():
               analysis_flag CHAR(1),
               analysis_comment VARCHAR
             )
-            """
+            """,
+	    """
+   	    CREATE TABLE IF NOT EXISTS water_limit (
+	      site_name VARCHAR,
+	      program_id VARCHAR,
+	      sample_location_id VARCHAR,
+	      parameter VARCHAR,
+	      statistical_test VARCHAR,
+	      background_start DATE,
+	      background_end DATE,
+	      lower_limit REAL NULL,
+	      upper_limit REAL NOT NULL
+	    )
+	    """
             )
     
     conn = None
@@ -112,11 +114,17 @@ def drop_tables():
             DROP TABLE sample_location CASCADE
             """,
             """
+	    DROP TABLE well_detail CASCADE
+	    """,
+            """
             DROP TABLE water_analysis CASCADE
             """,
             """
 	    DROP TABLE waste_analysis CASCADE
-            """
+            """,
+	    """
+	    DROP TABLE water_limit CASCADE
+	    """
             )
     
     conn = None
