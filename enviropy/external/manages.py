@@ -74,7 +74,7 @@ def read_manages4(server, database):
 
     driver = '{SQL Server Native Client 11.0}'
 
-    conxn = pyodbc.connect('DRIVER={0};SERVER={1};DBQ={2};TRUSTED_CONNECTION=Yes'.format(driver, server, database))
+    conxn = pyodbc.connect('DRIVER={0};SERVER={1};DATABASE={2};TRUSTED_CONNECTION=Yes'.format(driver, server, database))
 
     query = """
 
@@ -88,10 +88,10 @@ def read_manages4(server, database):
 	FROM sample_results 
 	    LEFT JOIN site_parameters
 	        ON sample_results.storet_code = site_parameters.storet_code AND sample_results.site_id = site_parameters.site_id	
-        LEFT JOIN locations
-		    ON locations.site_id = sample_results.site_id AND locations.location_id = sample_results.location_id
-		LEFT JOIN site
-            ON site.site_id = locations.site_id		
+            LEFT JOIN locations
+		ON locations.site_id = sample_results.site_id AND locations.location_id = sample_results.location_id
+	    LEFT JOIN site
+                ON site.site_id = locations.site_id		
     """
 
     data = pandas.read_sql(query, conxn)
