@@ -47,6 +47,21 @@ def read_manages3(mdb_path):
 
     return data
 
+
+class ManagesDatabase():
+
+    def __init__(self, driver, server, database):
+        self.driver = '{SQL Server Native Client 11.0}'
+        self.server = server
+        self.database = database
+        conxn = pyodbc.connect('DRIVER={0};SERVER={1};DATABASE={2};TRUSTED_CONNECTION=Yes'.format(driver, server, database))
+
+    def __enter__(self):
+        return self
+    
+    def __exit__(Self, exc_type, exc_val, exc_tb):
+        self.conxn.close()
+
 def read_manages4(server, database):
     """
 	Function to read a MANAGES 4.x database and return
