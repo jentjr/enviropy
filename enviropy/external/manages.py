@@ -1,7 +1,24 @@
 import pyodbc
 import pandas
+from configparser import ConfigParser
 
-__all__ = ['read_manages3', 'read_manages4']
+__all__ = ['read_manages3']
+
+def config(filename='database.ini', section='manages'):
+    """configure manages database"""
+    
+    parser = ConfigParser()
+    parser.read(filename)
+
+    db = {}
+    if parser.has_section(section):
+        params = parser.items(section)
+        for param in params:
+            db[param[0]] = param[1]
+    else:
+        raise Exception('Section {0} not found in the {1} file'.format(section, filename))
+
+    return db
 
 def read_manages3(mdb_path):
     """
@@ -48,52 +65,63 @@ def read_manages3(mdb_path):
     return data
 
 
-class ManagesDatabase():
-
-    def __init__(self, driver, server, database):
-        self.driver = '{SQL Server Native Client 11.0}'
-        self.server = server
-        self.database = database
-        conxn = pyodbc.connect('DRIVER={0};SERVER={1};DATABASE={2};TRUSTED_CONNECTION=Yes'.format(driver, server, database))
-
-    def __enter__(self):
-        return self
-    
-    def __exit__(Self, exc_type, exc_val, exc_tb):
-        self.conxn.close()
-
-def read_manages4(server, database):
+class Manages():
     """
-	Function to read a MANAGES 4.x database and return
-	the data in a pandas DataFrame for analysis.
+    Function to read a MANAGES 4.x database and return
+    the data in a pandas DataFrame for analysis.
 
-	Parameters
-	----------
-	server : str
-	    The name of the server.
+    Parameters
+    ----------
+    server : str
+        The name of the server.
 		
-	database : str
-	    The name of the database
+    database : str
+	The name of the database
 
     Returns
     -------
     DataFrame :  pandas DataFrame
         returns a pandas DataFrame.
 
-	Examples
-	--------
-	>>> from enviropy.external import read_manages4
-	>>> data = read_manages4(server=server_name, database=database_name)
+    Examples
+    --------
+    >>> from enviropy.external import manages
+    >>> db = manages.Manages(server=server_name, database=database_name)
 
-	"""
+    """
+    
+    _instance = None
 
-    driver = '{SQL Server Native Client 11.0}'
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = object.__new__(cls)
+			
+        try:
+            params = config()
+            conn = pyodbc.connect(**params)
+	        
+        except (Exception, pyodbc.DatabaseError) as error:
+            print(error)
+		
+        return cls._instance
+				
+    def __init__(self):
+        self.connection = self._instance.connection
 
-    conxn = pyodbc.connect('DRIVER={0};SERVER={1};DATABASE={2};TRUSTED_CONNECTION=Yes'.format(driver, server, database))
+    def __enter__(self):
+        return self
+    
+    def __exit__(Self, exc_type, exc_val, exc_tb):
+        self.connection.close()
 
-    query = """
+    def site_names(self):
+        return pandas.read_sql("SELECT NAME FROM SITE", self.connection)
+     
+    def get_results(self):
+        
+        query = """
 
-    SELECT site.site_id, site.name,
+        SELECT site.site_id, site.name,
 	sample_results.lab_id, sample_results.location_id,
 	sample_results.sample_date, site_parameters.param_name,
 	sample_results.lt_measure, sample_results.analysis_result,
@@ -106,11 +134,7 @@ def read_manages4(server, database):
             LEFT JOIN locations
 		ON locations.site_id = sample_results.site_id AND locations.location_id = sample_results.location_id
 	    LEFT JOIN site
-                ON site.site_id = locations.site_id		
-    """
+                ON site.site_id = locations.site_id	
+        """
 
-    data = pandas.read_sql(query, conxn)
-
-    conxn.close()
-
-    return data
+        return pandas.read_sql(query, self.connection)
