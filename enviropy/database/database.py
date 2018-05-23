@@ -1,5 +1,7 @@
 import psycopg2
-from config import config
+from . import config
+
+__all__ = ['create_tables', 'drop_tables']
 
 def create_tables():
     """ create tables in postgresql database"""

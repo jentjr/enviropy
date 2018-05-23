@@ -1,24 +1,8 @@
 import pyodbc
 import pandas
-from configparser import ConfigParser
+from enviropy.database import config 
 
 __all__ = ['read_manages3']
-
-def config(filename='database.ini', section='manages'):
-    """configure manages database"""
-    
-    parser = ConfigParser()
-    parser.read(filename)
-
-    db = {}
-    if parser.has_section(section):
-        params = parser.items(section)
-        for param in params:
-            db[param[0]] = param[1]
-    else:
-        raise Exception('Section {0} not found in the {1} file'.format(section, filename))
-
-    return db
 
 def read_manages3(mdb_path):
     """
@@ -65,7 +49,7 @@ def read_manages3(mdb_path):
     return data
 
 
-class Manages():
+class Manages(object):
     """
     Function to read a MANAGES 4.x database and return
     the data in a pandas DataFrame for analysis.
@@ -86,7 +70,7 @@ class Manages():
     Examples
     --------
     >>> from enviropy.external import manages
-    >>> db = manages.Manages(server=server_name, database=database_name)
+    >>> db = manages.Manages()
 
     """
     
@@ -96,26 +80,31 @@ class Manages():
         if cls._instance is None:
             cls._instance = object.__new__(cls)
 			
-        try:
-            params = config()
-            conn = pyodbc.connect(**params)
+            try:
+                print("connecting to manages database...")
+                params = config.config(filename='database.ini', section='manages')
+                _conxn = Manages._instance._conxn = pyodbc.connect(**params)
 	        
-        except (Exception, pyodbc.DatabaseError) as error:
-            print(error)
+            except (Exception, pyodbc.DatabaseError) as error:
+                print(error)
+                Manages._instance = None
+
+            else:
+                print("connection established")
 		
         return cls._instance
 				
     def __init__(self):
-        self.connection = self._instance.connection
+        self._conxn = self._instance._conxn
 
     def __enter__(self):
         return self
     
     def __exit__(Self, exc_type, exc_val, exc_tb):
-        self.connection.close()
+        self._conxn.close()
 
     def site_names(self):
-        return pandas.read_sql("SELECT NAME FROM SITE", self.connection)
+        return pandas.read_sql("SELECT NAME FROM SITE", self._conxn)
      
     def get_results(self):
         
@@ -134,7 +123,8 @@ class Manages():
             LEFT JOIN locations
 		ON locations.site_id = sample_results.site_id AND locations.location_id = sample_results.location_id
 	    LEFT JOIN site
-                ON site.site_id = locations.site_id	
+                ON site.site_id = locations.site_id
+	
         """
 
-        return pandas.read_sql(query, self.connection)
+        return pandas.read_sql(query, self._conxn)
