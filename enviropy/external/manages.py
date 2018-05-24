@@ -1,8 +1,9 @@
 import pyodbc
 import pandas
-from enviropy.database import config 
+from enviropy.database import config
 
-__all__ = ['read_manages3']
+__all__ = ["read_manages3"]
+
 
 def read_manages3(mdb_path):
     """
@@ -26,10 +27,10 @@ def read_manages3(mdb_path):
 
 	"""
 
-    driver = '{Microsoft Access Driver (*.mdb, *.accdb)}'
+    driver = "{Microsoft Access Driver (*.mdb, *.accdb)}"
     database = mdb_path
 
-    conxn = pyodbc.connect('DRIVER={0};DBQ={1}'.format(driver, database))
+    conxn = pyodbc.connect("DRIVER={0};DBQ={1}".format(driver, database))
 
     query = """
 
@@ -73,41 +74,41 @@ class Manages(object):
     >>> db = manages.Manages()
 
     """
-    
+
     _instance = None
 
     def __new__(cls):
         if cls._instance is None:
             cls._instance = object.__new__(cls)
-			
+
             try:
                 print("connecting to manages database...")
-                params = config.config(filename='database.ini', section='manages')
+                params = config.config(filename="database.ini", section="manages")
                 _conxn = Manages._instance._conxn = pyodbc.connect(**params)
-	        
+
             except (Exception, pyodbc.DatabaseError) as error:
                 print(error)
                 Manages._instance = None
 
             else:
                 print("connection established")
-		
+
         return cls._instance
-				
+
     def __init__(self):
         self._conxn = self._instance._conxn
 
     def __enter__(self):
         return self
-    
+
     def __exit__(self, exc_type, exc_val, exc_tb):
         self._conxn.close()
 
     def site_names(self):
         return pandas.read_sql("SELECT NAME FROM SITE", self._conxn)
-     
+
     def get_results(self):
-        
+
         query = """
 
         SELECT site.site_id, site.name,

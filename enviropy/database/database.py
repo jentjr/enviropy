@@ -1,7 +1,8 @@
 import psycopg2
 from . import config
 
-__all__ = ['create_tables', 'drop_tables']
+__all__ = ["create_tables", "drop_tables"]
+
 
 class Enviropy(object):
 
@@ -12,7 +13,7 @@ class Enviropy(object):
             cls._instance = object.__new__(cls)
 
             try:
-                params = config.config(filename='database.ini', section='postgres')
+                params = config.config(filename="database.ini", section="postgres")
                 _conxn = Enviropy._instance._conxn = psycopg2.connect(**params)
 
             except (Exception, psycopg2.DatabaseError) as error:
@@ -29,7 +30,7 @@ class Enviropy(object):
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self._conxn.close()
-  
+
     def create_tables():
         """ create tables in postgresql database"""
 
@@ -49,7 +50,7 @@ class Enviropy(object):
               PRIMARY KEY (site_name, sample_location_id)
             )
             """,
-	    """
+            """
 	    CREATE TABLE IF NOT EXISTS well_detail (
 	      site_name VARCHAR,
 	      well_id VARCHAR,
@@ -57,7 +58,7 @@ class Enviropy(object):
               PRIMARY KEY (site_name, well_id)
 	    )
 	    """,
-	    """
+            """
 	    CREATE TABLE IF NOT EXISTS boring_log (
 	      site_name VARCHAR,
 	      boring_id VARCHAR,
@@ -99,7 +100,7 @@ class Enviropy(object):
               analysis_comment VARCHAR
             )
             """,
-	    """
+            """
    	    CREATE TABLE IF NOT EXISTS water_limit (
 	      site_name VARCHAR,
 	      program_id VARCHAR,
@@ -111,8 +112,8 @@ class Enviropy(object):
 	      lower_limit REAL NULL,
 	      upper_limit REAL NOT NULL
 	    )
-	    """
-            )
+	    """,
+        )
 
     def drop_tables():
         """ drop tables"""
@@ -133,7 +134,7 @@ class Enviropy(object):
             """
 	    DROP TABLE waste_analysis CASCADE
             """,
-	    """
+            """
 	    DROP TABLE water_limit CASCADE
-	    """
-            )
+	    """,
+        )

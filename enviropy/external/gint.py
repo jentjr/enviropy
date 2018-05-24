@@ -1,7 +1,8 @@
 import pyodbc
 import pandas
 
-__all__ = ['read_gint']
+__all__ = ["read_gint"]
+
 
 def read_gint(gpj_path):
     """
@@ -26,10 +27,10 @@ def read_gint(gpj_path):
 
 	"""
 
-    driver = '{Microsoft Access Driver (*.mdb, *.accdb)}'
+    driver = "{Microsoft Access Driver (*.mdb, *.accdb)}"
     database = gpj_path
 
-    conxn = pyodbc.connect('DRIVER={0};DBQ={1}'.format(driver, database))
+    conxn = pyodbc.connect("DRIVER={0};DBQ={1}".format(driver, database))
 
     query = """
 
