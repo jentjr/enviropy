@@ -107,7 +107,7 @@ class Manages(object):
     def site_names(self):
         return pandas.read_sql("SELECT NAME FROM SITE", self._conxn)
 
-    def get_results(self):
+    def get_results(self, site):
 
         query = """
 
@@ -125,7 +125,9 @@ class Manages(object):
 		ON locations.site_id = sample_results.site_id AND locations.location_id = sample_results.location_id
 	    LEFT JOIN site
                 ON site.site_id = locations.site_id
-	
+        
+        WHERE name in ({1})	
         """
+        query = query.format('?', ','.join('?' * len(site)))
 
-        return pandas.read_sql(query, self._conxn)
+        return pandas.read_sql(query, self._conxn, params = site)
