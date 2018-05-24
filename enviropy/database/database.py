@@ -3,10 +3,37 @@ from . import config
 
 __all__ = ['create_tables', 'drop_tables']
 
-def create_tables():
-    """ create tables in postgresql database"""
+class Enviropy(object):
 
-    commands = (
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = object.__new__(cls)
+
+            try:
+                params = config.config(filename='database.ini', section='postgres')
+                _conxn = Enviropy._instance._conxn = psycopg2.connect(**params)
+
+            except (Exception, psycopg2.DatabaseError) as error:
+                print(error)
+                Enviropy._instance = None
+
+        return cls._instance
+
+    def __init__(self):
+        self._conxn = self._instance._conxn
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self._conxn.close()
+  
+    def create_tables():
+        """ create tables in postgresql database"""
+
+        commands = (
             """
             CREATE TABLE IF NOT EXISTS site (
               site_id SERIAL PRIMARY KEY,
@@ -86,29 +113,11 @@ def create_tables():
 	    )
 	    """
             )
-    
-    conn = None
-    try:
-        params = config()
-        conn = psycopg2.connect(**params)
-        cur = conn.cursor()
 
-        for command in commands:
-            cur.execute(command)
-        
-        cur.close()
+    def drop_tables():
+        """ drop tables"""
 
-        conn.commit()
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-    finally:
-        if conn is not None:
-            conn.close()
-
-def drop_tables():
-    """ drop tables"""
-
-    commands = (
+        commands = (
             """
             DROP TABLE site CASCADE
             """,
@@ -128,21 +137,3 @@ def drop_tables():
 	    DROP TABLE water_limit CASCADE
 	    """
             )
-    
-    conn = None
-    try:
-        params = config()
-        conn = psycopg2.connect(**params)
-        cur = conn.cursor()
-
-        for command in commands:
-            cur.execute(command)
-        
-        cur.close()
-
-        conn.commit()
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-    finally:
-        if conn is not None:
-            conn.close()
