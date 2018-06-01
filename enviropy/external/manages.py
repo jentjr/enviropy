@@ -5,6 +5,17 @@ from enviropy.database import config
 __all__ = ["read_manages3"]
 
 
+def _list_or_tuple(x):
+    return isinstance(x, (list, tuple))
+
+def _flatten(sequence, to_expand=_list_or_tuple):
+    for item in sequence:
+        if to_expand(item):
+            for subitem in _flatten(item, to_expand):
+                yield subitem
+        else:
+            yield item
+
 def read_manages3(mdb_path):
     """
 	Function to read a MANAGES 3.x database and return
@@ -103,11 +114,11 @@ class Manages(object):
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self._conxn.close()
-
+   
     def site_names(self):
         return pandas.read_sql("SELECT NAME FROM SITE", self._conxn)
 
-    def get_results(self, site):
+    def get_results(self, site, analyte):
 
         query = """
 
@@ -126,8 +137,10 @@ class Manages(object):
 	    LEFT JOIN site
                 ON site.site_id = locations.site_id
         
-        WHERE name in ({1})	
+        WHERE name in ({0}) AND param_name in ({1})	
         """
-        query = query.format('?', ','.join('?' * len(site)))
+        query = query.format(','.join('?' * len(site)), ','.join('?' * len(analyte)))
+     
+        query_params = tuple(_flatten((site, analyte)))
 
-        return pandas.read_sql(query, self._conxn, params = site)
+        return pandas.read_sql(query, self._conxn, params = query_params)
