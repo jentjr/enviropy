@@ -44,9 +44,9 @@ before_install:
   - PKGS="${PKGS} numpy"; if [ ${NUMPY} ]; then PKGS="${PKGS}=${NUMPY}"; fi
   - PKGS="${PKGS} scipy"; if [ ${SCIPY} ]; then PKGS="${PKGS}=${SCIPY}"; fi
   - if [ ${USEMPL} = true ]; then PKGS="${PKGS} matplotlib"; if [ ${MATPLOTLIB} ]; then PKGS="${PKGS}=${MATPLOTLIB}"; fi; fi
-  - echo conda create --yes --quiet -n timml ${PKGS} ${OPTIONAL} pyyaml
-  - conda create --yes --quiet -n timml ${PKGS} ${OPTIONAL} pyyaml pyodbc pandas
-  - source activate timml
+  - echo conda create --yes --quiet -n enviropy ${PKGS} ${OPTIONAL} pyyaml
+  - conda create --yes --quiet -n enviropy ${PKGS} ${OPTIONAL} pyyaml pyodbc pandas seaborn
+  - source activate enviropy
   - export SRCDIR=$PWD
   # Install packages
 install:
