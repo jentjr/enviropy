@@ -137,7 +137,7 @@ class Manages(object):
 	    LEFT JOIN site
                 ON site.site_id = locations.site_id
         
-        WHERE name in ({0}) AND param_name in ({1})	
+        WHERE (name in ({0}) OR ISNULL(name, '') = '' AND param_name in ({1}) OR ISNULL(param_name, '') = '')
         """
         query = query.format(','.join('?' * len(site)), ','.join('?' * len(analyte)))
      
