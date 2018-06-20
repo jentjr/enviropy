@@ -125,7 +125,7 @@ class Enviropy(object):
                analysis_unit CHAR,
                analysis_flag CHAR(1),
                analysis_comment VARCHAR,
-               PRIMARY KEY (site_name, program_id, sample_location_id, usgs_code)
+               PRIMARY KEY (site_name, program_id, sample_location_id, usgs_code),
                FOREIGN KEY (site_name, sample_location_id)
                    REFERENCES sample_location (site_name, sample_location_id),
                FOREIGN KEY (usgs_code)
