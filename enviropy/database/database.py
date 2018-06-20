@@ -49,6 +49,7 @@ class Enviropy(object):
                site_name VARCHAR,
                sample_location_id VARCHAR,
                sample_location GEOGRAPHY(POINT, 4326),
+               sample_location_type VARCHAR,
                PRIMARY KEY (site_name, sample_location_id),
                FOREIGN KEY (site_name) 
                    REFERENCES site (site_name)
@@ -61,22 +62,32 @@ class Enviropy(object):
 	    )
             """,
             """
+            CREATE TABLE IF NOT EXISTS sample_type (
+               sample_type_id VARCHAR,
+               description VARCHAR
+            )
+            """,
+            """
 	    CREATE TABLE IF NOT EXISTS parameter (
                usgs_code VARCHAR(5) PRIMARY KEY,
 	       group_name VARCHAR,
                param_name VARCHAR,
                casrn VARCHAR,
-               srsname VARCHAR NOT NULL
+               srsname VARCHAR NOT NULL,
+               param_unit VARCHAR NOT NULL,
             )
             """,
             """
 	    CREATE TABLE IF NOT EXISTS well_detail (
 	       site_name VARCHAR,
+               sample_type_id VARCHAR,
                sample_location_id VARCHAR,
                boring_location_id VARCHAR,
-               PRIMARY KEY (site_name, sample_location_id),
+               PRIMARY KEY (site_name, sample_location_id, sample_type_id),
                FOREIGN KEY (site_name, sample_location_id) 
-                   REFERENCES sample_location (site_name, sample_location_id)
+                   REFERENCES sample_location (site_name, sample_location_id),
+               FOREIGN KEY (sample_type_id)
+                   REFERENCES sample_type (sample_type_id)
 	    )
 	    """,
             """
@@ -96,7 +107,7 @@ class Enviropy(object):
                sample_date DATE,
                usgs_code VARCHAR(5) NOT NULL,
                analysis_result REAL,
-               analysis_unit CHAR,
+               analysis_unit VARCHAR NOT NULL,
                analysis_pql REAL,
                analysis_mdl REAL,
                analysis_qualifier CHAR(1),
