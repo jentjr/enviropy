@@ -145,7 +145,7 @@ class Enviropy(object):
                background_end DATE,
                lower_limit REAL NULL,
                upper_limit REAL NOT NULL,
-               PRIMARY KEY (site_name, program_id, sample_location_id)
+               PRIMARY KEY (site_name, program_id, sample_location_id),
                FOREIGN KEY (site_name, sample_location_id)
                    REFERENCES sample_location (site_name, sample_location_id),
                FOREIGN KEY (usgs_code)
