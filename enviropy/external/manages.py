@@ -8,6 +8,7 @@ __all__ = ["read_manages3"]
 def _list_or_tuple(x):
     return isinstance(x, (list, tuple))
 
+
 def _flatten(sequence, to_expand=_list_or_tuple):
     for item in sequence:
         if to_expand(item):
@@ -15,6 +16,7 @@ def _flatten(sequence, to_expand=_list_or_tuple):
                 yield subitem
         else:
             yield item
+
 
 def read_manages3(mdb_path):
     """
@@ -114,7 +116,7 @@ class Manages(object):
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self._conxn.close()
-   
+
     def site_names(self):
         return pandas.read_sql("SELECT NAME FROM SITE", self._conxn)
 
@@ -139,8 +141,8 @@ class Manages(object):
         
         WHERE (name in ({0}) OR ISNULL(name, '') = '' AND param_name in ({1}) OR ISNULL(param_name, '') = '')
         """
-        query = query.format(','.join('?' * len(site)), ','.join('?' * len(analyte)))
-     
+        query = query.format(",".join("?" * len(site)), ",".join("?" * len(analyte)))
+
         query_params = tuple(_flatten((site, analyte)))
 
-        return pandas.read_sql(query, self._conxn, params = query_params)
+        return pandas.read_sql(query, self._conxn, params=query_params)

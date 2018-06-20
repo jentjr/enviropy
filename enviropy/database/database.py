@@ -1,7 +1,5 @@
 import psycopg2
-from . import config
-
-__all__ = []
+from enviropy.database import config
 
 
 class Enviropy(object):
@@ -13,12 +11,16 @@ class Enviropy(object):
             cls._instance = object.__new__(cls)
 
             try:
-                params = config.config(filename="database.ini", section="postgres")
+                print("connecting to database...")
+                params = config.config(filename="database.ini", section="postgresql")
                 _conxn = Enviropy._instance._conxn = psycopg2.connect(**params)
 
             except (Exception, psycopg2.DatabaseError) as error:
                 print(error)
                 Enviropy._instance = None
+
+            else:
+                print("connection established")
 
         return cls._instance
 
@@ -42,7 +44,7 @@ class Enviropy(object):
 			   PRIMARY KEY (site_name)
             )
             """,
-			"""
+            """
             CREATE TABLE IF NOT EXISTS sample_location (
                site_name VARCHAR,
                sample_location_id VARCHAR,
@@ -50,14 +52,14 @@ class Enviropy(object):
                FOREIGN KEY (site_name) REFERENCES site(site_name)
             )
             """,
-			"""
+            """
 			CREATE TABLE IF NOT EXISTS program (
 			    program_id VARCHAR,
 			    description VARCHAR,
 			    PRIMARY KEY (program_id)
 			)
 			""",
-			"""
+            """
 			CREATE TABLE IF NOT EXISTS global_params (
 			    group_name VARCHAR,
 			    param_name VARCHAR,
@@ -137,7 +139,7 @@ class Enviropy(object):
 				FOREIGN KEY (site_name) REFERENCES site(site_name),
 				FOREIGN KEY (program_id) REFERENCES program(program_id)
 	        )
-	        """
+	        """,
         )
 
     def drop_tables():
@@ -161,5 +163,5 @@ class Enviropy(object):
             """,
             """
 	        DROP TABLE water_limit CASCADE
-	        """
+	        """,
         )
