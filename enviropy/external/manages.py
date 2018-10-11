@@ -72,7 +72,7 @@ class Manages(object):
     ----------
     server : str
         The name of the server.
-		
+
     database : str
 	The name of the database
 
@@ -120,7 +120,11 @@ class Manages(object):
     def site_names(self):
         return pandas.read_sql("SELECT NAME FROM SITE", self._conxn)
 
-    def get_results(self, site, analyte):
+    def get_results(self, site=None):
+        """
+        query Manages database by Site
+
+        """
 
         query = """
 
@@ -130,19 +134,24 @@ class Manages(object):
 	sample_results.lt_measure, sample_results.analysis_result,
 	sample_results.detection_limit, sample_results.RL,
 	sample_results.flags, site_parameters.default_unit
-	
-	FROM sample_results 
+
+	FROM sample_results
 	    LEFT JOIN site_parameters
-	        ON sample_results.storet_code = site_parameters.storet_code AND sample_results.site_id = site_parameters.site_id	
+	        ON sample_results.storet_code = site_parameters.storet_code AND sample_results.site_id = site_parameters.site_id
             LEFT JOIN locations
 		ON locations.site_id = sample_results.site_id AND locations.location_id = sample_results.location_id
 	    LEFT JOIN site
                 ON site.site_id = locations.site_id
-        
-        WHERE (name in ({0}) OR ISNULL(name, '') = '' AND param_name in ({1}) OR ISNULL(param_name, '') = '')
-        """
-        query = query.format(",".join("?" * len(site)), ",".join("?" * len(analyte)))
 
-        query_params = tuple(_flatten((site, analyte)))
+        WHERE (name in ({0}))
+        """
+        if site is not None:
+            query = query.format(",".join("?" * len(site)))
+            query_params = tuple(_flatten(site))
+
+        else:
+            all_sites = self.site_names()["NAME"]
+            query = query.format(",".join("?" * len(all_sites)))
+            query_params = tuple(_flatten(all_sites))
 
         return pandas.read_sql(query, self._conxn, params=query_params)
