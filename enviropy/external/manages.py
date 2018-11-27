@@ -20,25 +20,25 @@ def _flatten(sequence, to_expand=_list_or_tuple):
 
 def read_manages3(mdb_path):
     """
-	Function to read a MANAGES 3.x database and return
-	the data in a pandas DataFrame for analysis.
+    Function to read a MANAGES 3.x database and return
+    the data in a pandas DataFrame for analysis.
 
-	Parameters
-	----------
-	mdb_path : str
-	    The path to the MANAGES 3.x Site.mdb file.
+    Parameters
+    ----------
+    mdb_path : str
+        The path to the MANAGES 3.x Site.mdb file.
 
     Returns
     -------
     DataFrame :  pandas DataFrame
         returns a pandas DataFrame.
 
-	Examples
-	--------
-	>>> from enviropy.external import read_manages3
-	>>> data = read_manages3('H:\INTERNAL\MANAGES_DATA\Cardinal\Cardinal\Site.mdb')
+    Examples
+    --------
+    >>> from enviropy.external import read_manages3
+    >>> data = read_manages3('H:\INTERNAL\MANAGES_DATA\Cardinal\Cardinal\Site.mdb')
 
-	"""
+    """
 
     driver = "{Microsoft Access Driver (*.mdb, *.accdb)}"
     database = mdb_path
