@@ -27,9 +27,9 @@ install:
   - conda update -q conda
   - conda install -q python=%PYTHON_VERSION% setuptools numpy scipy pandas pyodbc psycopg2 seaborn
   - conda info -a
-  - python.exe setup.py install
+  - python setup.py install
 
 test_script:
-  - python.exe -c 'import enviropy; enviropy.__version__;'    
+  - python -c 'import enviropy; enviropy.__version__;'    
 
 build: off
