@@ -25,3 +25,11 @@ def test_upper_prediction_interval():
     )
     assert_allclose(lpl, np.NINF)
     assert_allclose(upl, 12.22469)
+
+    
+def test_n_future_obs():
+    lpl, upl = prediction_interval(
+        [10.0, 11.5, 11.0, 10.6, 10.9, 12.0, 11.3, 10.7], alpha=0.05, type="upper", n_future_obs=10
+    )
+    assert_allclose(lpl, np.NINF)
+    assert_allclose(upl, 13.26213)

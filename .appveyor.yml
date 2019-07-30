@@ -6,8 +6,6 @@ cache:
 
 environment:
   matrix:
-    - PYTHON: C:\Miniconda35
-      PYTHON_VERSION: 3.5
     - PYTHON: C:\Miniconda36
       PYTHON_VERSION: 3.6
     - PYTHON: C:\Miniconda37
