@@ -48,5 +48,8 @@ before_install:
 install:
   - python setup.py install
   
-script:
-  - python -c 'import enviropy; enviropy.__version__;'
+script: 
+  - pytest --cov=timml tests/
+
+after_success:
+  - coveralls
