@@ -7,9 +7,9 @@ def boxplot(df, wells, analytes):
     boxplot
     
     Parameters
-	----------
-	df : pandas DataFrame
-	    pandas DataFrame of environmental data 
+    ----------
+    df : pandas DataFrame
+        pandas DataFrame of environmental data 
     
     wells : list of wells to plots
     
@@ -20,10 +20,10 @@ def boxplot(df, wells, analytes):
     boxplot : boxplot 
         returns a seaborn boxplot.
 
-	Examples
-	--------
-	>>> from enviropy.plots import boxplot
-	>>> boxplot(df, wells, analytes)
+    Examples
+    --------
+    >>> from enviropy.plots import boxplot
+    >>> boxplot(df, wells, analytes)
     """
 
     data = df[df.location_id.isin(wells) & df.param_name.isin(analytes)]

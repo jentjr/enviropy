@@ -27,12 +27,12 @@ def test_upper_prediction_interval():
     assert_approx_equal(upl, 12.22469, significant=7)
 
 
-def test_n_future_obs():
+def test_k_future_obs():
     lpl, upl = prediction_interval(
         [10.0, 11.5, 11.0, 10.6, 10.9, 12.0, 11.3, 10.7],
         alpha=0.05,
         type="upper",
-        n_future_obs=10,
+        k_future_obs=10,
     )
     assert_approx_equal(lpl, np.NINF)
     assert_approx_equal(upl, 13.26213, significant=7)
