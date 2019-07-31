@@ -42,7 +42,7 @@ install:
   - python setup.py install
   
 script: 
-  - pytest --cov=timml tests/
+  - pytest --cov=enviropy tests/
 
 after_success:
   - coveralls

@@ -23,11 +23,11 @@ install:
   - if "%PLATFORM%" == "x64" set PATH=%PYTHON%-x64\bin;%PYTHON%-x64\Scripts;%PATH%
   - conda config --set always_yes yes
   - conda update -q conda
-  - conda install -q python=%PYTHON_VERSION% setuptools numpy scipy matplotlib seaborn
+  - conda install -q python=%PYTHON_VERSION% numpy scipy matplotlib seaborn pytest
   - conda info -a
   - python setup.py install
 
 test_script:
-  - python -c 'import enviropy; enviropy.__version__;'    
+  - pytest tests/    
 
 build: off

@@ -30,12 +30,12 @@ def prediction_interval(x, alpha, type="two-sided", n_future_obs=1):
 
     if not isinstance(x, np.ndarray):
         x = np.asarray(x)
-    
+
     alpha_s = alpha
 
     if n_future_obs > 1:
         alpha = alpha_s / n_future_obs
-        
+
     if type == "two-sided":
         lpl = x.mean() - stats.tstd(x) * stats.t.ppf(
             1 - alpha / 2, x.size - 1
