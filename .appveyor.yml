@@ -24,7 +24,6 @@ install:
   - conda config --set always_yes yes
   - conda update -q conda
   - conda install -q python=%PYTHON_VERSION% numpy scipy matplotlib seaborn pytest
-  - conda info -a
   - python setup.py install
 
 test_script:
