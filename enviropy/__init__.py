@@ -10,5 +10,3 @@ __author__ = "Justin R. Jent"
 
 from . import plots
 from . import stats
-from . import external
-from . import database
