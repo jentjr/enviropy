@@ -18,13 +18,15 @@ platform:
 matrix:
   fast_finish: true
 
-install:
+before_build:
   - if "%PLATFORM%" == "x86" set PATH=%PYTHON%\bin;%PYTHON%\Scripts;%PATH%
   - if "%PLATFORM%" == "x64" set PATH=%PYTHON%-x64\bin;%PYTHON%-x64\Scripts;%PATH%
   - conda config --set always_yes yes
   - conda update -q conda
   - conda install -q python=%PYTHON_VERSION% numpy scipy matplotlib seaborn pytest
   - conda info -a
+  
+build_script:
   - python setup.py install
 
 test_script:
